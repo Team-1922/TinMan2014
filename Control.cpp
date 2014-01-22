@@ -54,15 +54,54 @@ float Control::GetTwist(StickSide side)
 
 bool Control::GetButtonState(StickSide side, int btnNum)
 {
+	BtnIter iter;
+	std::map<int, RobotButton>* buttons;
+	Joystick* stick;
 	switch(side)
 	{
 	case LEFT:
-		BtnIter iter = leftButtons.find(btnNum);
-		
+		iter = leftButtons.find(btnNum);
+		buttons = &leftButtons;
+		stick = &leftStick;
 		break;
 		
 	case RIGHT:
-		BtnIter iter = rightButtons.find(btnNum);
+		iter = rightButtons.find(btnNum);
+		buttons = &rightButtons;
+		stick = &rightStick;
 		break;
 	}
+	if(iter == buttons->end())
+	{
+		buttons->insert(btnNum, RobotButton(stick, btnNum));
+	}
+	RobotButton button = iter->second;
+	return button.GetButtonState();
+}
+
+bool Control::GetButtonSwitch(StateSide side, int btnNum)
+{
+	BtnIter iter;
+	std::map<int, RobotButton>* buttons;
+	Joystick* stick;
+	switch(side)
+	{
+	case LEFT:
+		iter = leftButtons.find(btnNum);
+		buttons = &leftButtons;
+		stick = &leftStick;
+		break;
+		
+	case RIGHT:
+		iter = rightButtons.find(btnNum);
+		buttons = &rightButtons;
+		stick = &rightStick;
+		break;
+	}
+	if(iter == buttons->end())
+	{
+		buttons->insert(btnNum, RobotButton(stick, btnNum));
+	}
+	RobotButton button = iter->second;
+	return button.GetButtonSwitched();
 }
