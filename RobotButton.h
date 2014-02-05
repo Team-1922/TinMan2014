@@ -6,13 +6,13 @@
 class RobotButton
 {
 private:
-	bool lastState;
-	int btnNum;
-	Joystick* stick;
+	bool lastState; // Last state of the button
+	int btnNum; // Button number being tracked
+	Joystick* stick; // Joystick button is being tracked on
 public:
-	RobotButton(Joystick* stick, int btnNum);
-	bool GetButtonState();
-	bool GetButtonSwitched();
+	RobotButton(Joystick* stick, int btnNum); // Constructor
+	bool GetButtonState(); // Get the current button state
+	bool GetButtonSwitched(); // Get whether the button has changed from off to on
 };
 
 #endif ROBOTBUTTON_H
