@@ -7,7 +7,7 @@ DriveTrain::DriveTrain() : mainDrive(PWM_FRONT_LEFT_MOTOR,
 									 PWM_BACK_RIGHT_MOTOR),
 						   robotGyro(GYRO_CHANNEL)
 {
-	// #yoloswag
+	// #yoloswagforlifeveryday
 }
 
 void DriveTrain::DriveMecanum(float xVal, float yVal, float rotation)
