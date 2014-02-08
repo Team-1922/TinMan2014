@@ -15,4 +15,4 @@ public:
 	bool GetButtonSwitched(); // Get whether the button has changed from off to on
 };
 
-#endif ROBOTBUTTON_H
+#endif

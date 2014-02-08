@@ -1,4 +1,6 @@
 #include "WPILib.h"
+#include "DriveTrain.h"
+#include "Control.h"
 
 /**
  * This is a demo program showing the use of the RobotBase class.
@@ -7,16 +9,14 @@
  * the driver station or the field controls.
  */ 
 class RobotDemo : public SimpleRobot
-{
-	RobotDrive myRobot; // robot drive system
-	Joystick stick; // only joystick
+{	
+	DriveTrain robotDrive; // Class that handles the drivetrain for us
+	Control robotControl; // Class that gives us functions for getting stuff from joysticks
 
 public:
-	RobotDemo():
-		myRobot(1, 2),	// these must be initialized in the same order
-		stick(1)		// as they are declared above.
+	RobotDemo() : robotDrive(), robotControl()
 	{
-		myRobot.SetExpiration(0.1);
+		// We don't really have to do anything here yet
 	}
 
 	/**
@@ -24,10 +24,7 @@ public:
 	 */
 	void Autonomous()
 	{
-		myRobot.SetSafetyEnabled(false);
-		myRobot.Drive(-0.5, 0.0); 	// drive forwards half speed
-		Wait(2.0); 				//    for 2 seconds
-		myRobot.Drive(0.0, 0.0); 	// stop robot
+		// Not doing anything yet - will add in later
 	}
 
 	/**
@@ -35,10 +32,14 @@ public:
 	 */
 	void OperatorControl()
 	{
-		myRobot.SetSafetyEnabled(true);
 		while (IsOperatorControl())
 		{
-			myRobot.ArcadeDrive(stick); // drive with arcade style (use right stick)
+			// Get the three values from the right joystick for Mecanum drive
+			float xVal = robotControl.GetX(RIGHT);
+			float yVal = robotControl.GetY(RIGHT);
+			float twistVal = robotControl.GetTwist(RIGHT);
+			// Just pass the values into the DriveMecanum function
+			robotDrive.DriveMecanum(xVal, yVal, twistVal);
 			Wait(0.005);				// wait for a motor update time
 		}
 	}
@@ -52,4 +53,5 @@ public:
 };
 
 START_ROBOT_CLASS(RobotDemo);
+
 

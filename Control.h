@@ -14,19 +14,20 @@ enum StickSide
 class Control
 {
 private:
-	Joystick leftStick = Joystick(1);
-	Joystick rightStick = Joystick(2);
+	Joystick leftStick;
+	Joystick rightStick;
 	std::map<int, RobotButton> leftButtons;
 	std::map<int, RobotButton> rightButtons;
 	typedef std::map<int, RobotButton>::iterator BtnIter;
+	typedef std::pair<int, RobotButton> MapPair;
 public:
 	Control();
-	static float GetX(StickSide side);
-	static float GetY(StickSide side);
-	static float GetThrottle(StickSide side);
-	static float GetTwist(StickSide side);
-	static bool GetButtonState(StickSide side, int btnNum);
-	static bool GetButtonSwitch(StickSide side, int btnNum);
+	float GetX(StickSide side);
+	float GetY(StickSide side);
+	float GetThrottle(StickSide side);
+	float GetTwist(StickSide side);
+	bool GetButtonState(StickSide side, int btnNum);
+	bool GetButtonSwitch(StickSide side, int btnNum);
 };
 
 #endif
