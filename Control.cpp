@@ -112,6 +112,7 @@ bool Control::GetButtonSwitch(StickSide side, int btnNum)
 	*/
 	switch(side)
 	{
+	case LEFT:
 		buttons = &leftButtons;
 		stick = &leftStick;
 		break;

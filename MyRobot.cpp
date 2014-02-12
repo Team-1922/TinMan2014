@@ -1,22 +1,21 @@
 #include "WPILib.h"
 #include "DriveTrain.h"
 #include "Control.h"
+//#include "Pneumatics.h"
 
-/**
- * This is a demo program showing the use of the RobotBase class.
- * The SimpleRobot class is the base of a robot application that will automatically call your
- * Autonomous and OperatorControl methods at the right time as controlled by the switches on
- * the driver station or the field controls.
- */ 
 class RobotDemo : public SimpleRobot
 {	
 	DriveTrain robotDrive; // Class that handles the drivetrain for us
 	Control robotControl; // Class that gives us functions for getting stuff from joysticks
-
+	
 public:
 	RobotDemo() : robotDrive(), robotControl()
 	{
-		// We don't really have to do anything here yet
+		//if(!Pneumatics::InitCompressor())
+		//{
+			// Whoops we broke it
+			// Do something about it at some point
+		//}
 	}
 
 	/**
@@ -24,7 +23,10 @@ public:
 	 */
 	void Autonomous()
 	{
-		// Not doing anything yet - will add in later
+		/*Wait(0.5);
+		robotDrive.DriveMecanum(0.0f, 0.75f, 0.0f);
+		Wait(1);
+		robotDrive.DriveMecanum(0.0f, 0.0f, 0.0f);*/
 	}
 
 	/**
@@ -34,12 +36,8 @@ public:
 	{
 		while (IsOperatorControl())
 		{
-			// Get the three values from the right joystick for Mecanum drive
-			float xVal = robotControl.GetX(RIGHT);
-			float yVal = robotControl.GetY(RIGHT);
-			float twistVal = robotControl.GetTwist(RIGHT);
-			// Just pass the values into the DriveMecanum function
-			robotDrive.DriveMecanum(xVal, yVal, twistVal);
+			// Just pass the control variable to the class
+			robotDrive.DriveMecanum(&robotControl);
 			Wait(0.005);				// wait for a motor update time
 		}
 	}
@@ -53,5 +51,3 @@ public:
 };
 
 START_ROBOT_CLASS(RobotDemo);
-
-
