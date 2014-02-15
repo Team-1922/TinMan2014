@@ -1,9 +1,9 @@
 #include "RobotButton.h"
 
-RobotButton::RobotButton(Joystick* stick, int btnNum)
+RobotButton::RobotButton(Joystick* inStick, int inBtnNum)
 {
-	this->btnNum = btnNum; // Set the button number to the button you're tracking
-	this->stick = stick; // Set the stick to the stick being tracked
+	this->btnNum = inBtnNum; // Set the button number to the button you're tracking
+	this->stick = inStick; // Set the stick to the stick being tracked
 	this->lastState = false; // Set the last state to false initially
 }
 

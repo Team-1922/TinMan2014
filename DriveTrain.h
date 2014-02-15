@@ -8,7 +8,7 @@ class DriveTrain
 {
 private:
 	RobotDrive mainDrive;
-	/*Gyro robotGyro;*/
+	Gyro robotGyro;
 public:
 	DriveTrain();
 	void DriveMecanum(float xVal, float yVal, float rotation);

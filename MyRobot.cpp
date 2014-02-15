@@ -7,9 +7,10 @@ class RobotDemo : public SimpleRobot
 {	
 	DriveTrain robotDrive; // Class that handles the drivetrain for us
 	Control robotControl; // Class that gives us functions for getting stuff from joysticks
+	Solenoid testSolenoid;
 	
 public:
-	RobotDemo() : robotDrive(), robotControl()
+	RobotDemo() : robotDrive(), robotControl(), testSolenoid(1)
 	{
 		//if(!Pneumatics::InitCompressor())
 		//{
@@ -36,6 +37,7 @@ public:
 	{
 		while (IsOperatorControl())
 		{
+			testSolenoid.Set(robotControl.GetButtonState(RIGHT, 1));
 			// Just pass the control variable to the class
 			robotDrive.DriveMecanum(&robotControl);
 			Wait(0.005);				// wait for a motor update time

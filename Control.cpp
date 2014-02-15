@@ -67,70 +67,55 @@ float Control::GetTwist(StickSide side)
 
 bool Control::GetButtonState(StickSide side, int btnNum)
 {
-	BtnIter iter;
-	// Create some pointers to the button maps and joysticks
-	std::map<int, RobotButton>* buttons;
-	Joystick* stick;
-	/*
-	 * We assign to these pointers the correct map and joystick
-	 * based on which side we want to get from.
-	 */
 	switch(side)
 	{
 	case LEFT:
-		buttons = &leftButtons;
-		stick = &leftStick;
+		JoystickButton button(&leftStick, btnNum);
+		return button.Get();
 		break;
-		
 	case RIGHT:
-		buttons = &rightButtons;
-		stick = &rightStick;
+		JoystickButton button(&rightStick, btnNum);
+		return button.Get();
+		break;
+	default:
+		return false;
 		break;
 	}
-	// Iter points to the button we want in the map
-	iter = buttons->find(btnNum);
-	if(iter == buttons->end())
-	{
-		// If the button isn't in the map, we create an entry for it
-		buttons->insert(MapPair(btnNum, RobotButton(stick, btnNum)));
-	}
-	// Get the value from the button
-	RobotButton button = iter->second;
-	// Then return it
-	return button.GetButtonState();
 }
 
 bool Control::GetButtonSwitch(StickSide side, int btnNum)
 {
-	BtnIter iter;
-	// Create some pointers to the button maps and joysticks
-	std::map<int, RobotButton>* buttons;
-	Joystick* stick;
-	/*
-	* We assign to these pointers the correct map and joystick
-	* based on which side we want to get from.
-	*/
+	BtnIter stateIter;
+	JoystickButton button;
+	bool currentState;
+	std::map<int, bool> *buttonMap;
 	switch(side)
 	{
 	case LEFT:
-		buttons = &leftButtons;
-		stick = &leftStick;
+		button = JoystickButton(&leftStick, btnNum);
+		buttonMap = &leftButtonState;
 		break;
-		
 	case RIGHT:
-		buttons = &rightButtons;
-		stick = &rightStick;
+		button = JoystickButton(&rightStick, btnNum);
+		buttonMap = &rightButtonState;
+		break;
+	default:
+		button = JoystickButton(&leftStick, btnNum);
+		buttonMap = &leftButtonState;
 		break;
 	}
-	// Iter points to the button we want in the map
-	iter = buttons->find(btnNum);
-	if(iter == buttons->end())
+	currentState = button.Get();
+	stateIter = buttonMap->find(btnNum);
+	if(stateIter == buttonMap->end())
 	{
-		// If the button isn't in the map, we create an entry for it
-		buttons->insert(MapPair(btnNum, RobotButton(stick, btnNum)));
+		buttonMap->insert(MapPair(btnNum, currentState));
+		stateIter = buttonMap->find(btnNum);
 	}
-	// Get the value from the button
-	RobotButton button = iter->second;
-	// Then return it
-	return button.GetButtonSwitched();
+	bool lastState = stateIter->second;
+	stateIter->second = currentState;
+	if(currentState && !lastState)
+	{
+		return true;
+	}
+	return false;
 }
