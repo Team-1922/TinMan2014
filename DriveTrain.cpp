@@ -28,7 +28,7 @@ void DriveTrain::DriveMecanum(Control* control)
 	// Get the values from the control class
 	float xVal = control->GetX(RIGHT);
 	float yVal = control->GetY(RIGHT);
-	float twistVal = control->GetTwist(RIGHT);
+	float twistVal = control->GetThrottle(RIGHT);
 	// Pass those values to our normal drive function
 	DriveMecanum(xVal, -yVal, twistVal);
 }

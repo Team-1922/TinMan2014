@@ -1,21 +1,24 @@
 #ifndef ROBOTSHOOTER_H
 #define ROBOTSHOOTER_H
 
-/*
- * This file is full of nothing so far.
- * Stuff will be added once the pneumatics for the launcher are tested.
- * Gotta make sure that we know how to pneumatics in C++ since we haven't
- * done it before.
- */
+#include "WPILib.h"
+#include "RobotDefines.h"
 
 class Shooter
 {
 private:
-	
+	Solenoid catapultHigh;
+	Solenoid catapultLow;
+	Solenoid kickerHigh;
+	Solenoid kickerLow;
+	bool initiated;
+	DigitalInput downLimit;
+	static const int DOWN_LIMIT_CHANNEL = 1;
 public:
 	Shooter();
-	void Shoot();
-	
+	void Initialize();
+	void LaunchSequence();
+	void ResetSequence();
 };
 
 #endif
