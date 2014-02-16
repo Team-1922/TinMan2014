@@ -1,7 +1,6 @@
 #ifndef ROBOTCONTROL_H
 #define ROBOTCONTROL_H
 
-#include "RobotButton.h"
 #include "WPILib.h"
 #include <map>
 

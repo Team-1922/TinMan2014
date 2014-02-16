@@ -80,32 +80,36 @@ bool Control::GetButtonState(StickSide side, int btnNum)
 		stick = &leftStick;
 		break;
 	}
-	JoystickButton* button = new JoystickButton(stick, btnNum);
-	return button->Get();
+	return stick->GetRawButton(btnNum);
 }
 
 bool Control::GetButtonSwitch(StickSide side, int btnNum)
 {
 	BtnIter stateIter;
-	JoystickButton* button;
+	// JoystickButton* button;
+	Joystick* stick;
 	bool currentState;
 	std::map<int, bool> *buttonMap;
 	switch(side)
 	{
 	case LEFT:
-		button = new JoystickButton(&leftStick, btnNum);
+		//button = new JoystickButton(&leftStick, btnNum);
+		stick = &leftStick;
 		buttonMap = &leftButtonState;
 		break;
 	case RIGHT:
-		button = new JoystickButton(&rightStick, btnNum);
+		//button = new JoystickButton(&rightStick, btnNum);
+		stick = &rightStick;
 		buttonMap = &rightButtonState;
 		break;
 	default:
-		button = new JoystickButton(&leftStick, btnNum);
+		//button = new JoystickButton(&leftStick, btnNum);
+		stick = &leftStick;
 		buttonMap = &leftButtonState;
 		break;
 	}
-	currentState = button->Get();
+	//currentState = button->Get();
+	currentState = stick->GetRawButton(btnNum);
 	stateIter = buttonMap->find(btnNum);
 	if(stateIter == buttonMap->end())
 	{

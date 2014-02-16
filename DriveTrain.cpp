@@ -29,8 +29,15 @@ void DriveTrain::DriveMecanum(Control* control)
 	float xVal = control->GetX(RIGHT);
 	float yVal = control->GetY(RIGHT);
 	float twistVal = control->GetThrottle(RIGHT);
+	
+	xVal *= xVal > 0 ? xVal : -xVal;
+	yVal *= yVal > 0 ? yVal : -yVal;
+	twistVal *= twistVal > 0 ? twistVal : -twistVal;
+	
 	// Pass those values to our normal drive function
-	DriveMecanum(xVal, -yVal, twistVal);
+	// The y-axis is inverted and our gyro reads backwards,
+	// so we negate these values.
+	DriveMecanum(xVal, -yVal, -twistVal);
 }
 
 void DriveTrain::ResetGyro()

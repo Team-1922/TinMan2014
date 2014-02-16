@@ -6,15 +6,14 @@ Shooter::Shooter() : catapultHigh(SOLENOID_CATAPULT_HIGH),
 					 kickerLow(SOLENOID_KICKER_LOW),
 					 downLimit(DOWN_LIMIT_CHANNEL)
 {
-
-	catapultHigh.Set(false);
-	catapultLow.Set(false);
-	kickerHigh.Set(false);
-	kickerLow.Set(false);
 }
 
 void Shooter::Initialize()
 {
+	catapultHigh.Set(false);
+	catapultLow.Set(false);
+	kickerHigh.Set(false);
+	kickerLow.Set(false);
 	if(!downLimit.Get())
 	{
 		Wait(0.001);
