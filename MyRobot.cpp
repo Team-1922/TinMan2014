@@ -3,6 +3,7 @@
 #include "Control.h"
 #include "Shooter.h"
 #include "RobotDefines.h"
+#include "Intake.h"
 
 class RobotDemo : public SimpleRobot
 {	
@@ -10,13 +11,20 @@ class RobotDemo : public SimpleRobot
 	DriveTrain robotDrive; // Class that handles the drivetrain for us
 	Control robotControl; // Class that gives us functions for getting stuff from joysticks
 	Shooter robotShooter;
-	//Solenoid testSolenoid;
+	Jaguar intakeMotor;
 	
 public:
 	RobotDemo() : robotCompressor(COMPRESSOR_SWITCH_CHANNEL, COMPRESSOR_RELAY_CHANNEL),
-			robotDrive(), robotControl(), robotShooter()
+			robotDrive(), robotControl(), robotShooter(),intakeMotor(PWM_INTAKE_MOTOR)
 	{
 	}
+	
+void RobotInit(){
+	robotShooter.Initialize();
+	
+	
+	
+}
 
 	/**
 	 * Drive left & right motors for 2 seconds then stop
@@ -45,10 +53,22 @@ public:
 			if(robotControl.GetButtonSwitch(RIGHT, 1))
 			{
 				robotShooter.LaunchSequence();
-				Wait(1.5);
+				//Wait(1.5);
+				//robotShooter.ResetSequence();
+			}
+			if(robotControl.GetButtonSwitch(RIGHT,2)){
 				robotShooter.ResetSequence();
 			}
 			
+			if(robotControl.GetButtonState(RIGHT,4)){
+				intakeMotor.Set(-0.8);
+			}
+			else if(robotControl.GetButtonState(RIGHT,3)){
+							intakeMotor.Set(0.8);
+						}
+						else{
+							intakeMotor.Set(-0);
+						}
 			Wait(0.005);				// wait for a motor update time
 		}
 	}

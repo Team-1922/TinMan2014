@@ -10,43 +10,44 @@ Shooter::Shooter() : catapultHigh(SOLENOID_CATAPULT_HIGH),
 
 void Shooter::Initialize()
 {
-	catapultHigh.Set(false);
-	catapultLow.Set(false);
-	kickerHigh.Set(false);
-	kickerLow.Set(false);
-	if(!downLimit.Get())
-	{
-		Wait(0.001);
-	}
-	kickerLow.Set(true);
-	kickerHigh.Set(false);
-	Wait(0.1);
 	catapultLow.Set(true);
-	catapultHigh.Set(false);
-	initiated = true;
+		catapultHigh.Set(false);
+		/*while(!downLimit.Get())
+		{
+			Wait(0.001);
+		}
+		*/
+		Wait(3.3);
+		kickerLow.Set(false);
+		kickerHigh.Set(true);
+		Wait(0.1);
+		catapultLow.Set(false);
+		catapultHigh.Set(true);
 }
 
 void Shooter::LaunchSequence()
 {
 	if(!initiated || !downLimit.Get())
 		return;
-	kickerLow.Set(false);
-	kickerHigh.Set(true);
+	kickerLow.Set(true);
+	kickerHigh.Set(false);
 }
 
 void Shooter::ResetSequence()
 {
-	if(!initiated || downLimit.Get())
+	if(!initiated) //add limswitch later
 		return;
-	catapultLow.Set(false);
-	catapultHigh.Set(true);
-	while(!downLimit.Get())
+	catapultLow.Set(true);
+	catapultHigh.Set(false);
+	/*while(!downLimit.Get())
 	{
 		Wait(0.001);
 	}
-	kickerLow.Set(true);
-	kickerHigh.Set(false);
+	*/
+	Wait(3.3);
+	kickerLow.Set(false);
+	kickerHigh.Set(true);
 	Wait(0.1);
-	catapultLow.Set(true);
-	catapultHigh.Set(false);
+	catapultLow.Set(false);
+	catapultHigh.Set(true);
 }

@@ -1,8 +1,8 @@
 #ifndef ROBOTSHOOTER_H
 #define ROBOTSHOOTER_H
 
-#include "WPILib.h"
 #include "RobotDefines.h"
+#include "WPILib.h"
 
 class Shooter
 {

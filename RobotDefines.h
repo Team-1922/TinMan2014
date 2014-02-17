@@ -25,4 +25,7 @@
 #define COMPRESSOR_SWITCH_CHANNEL 2
 #define COMPRESSOR_RELAY_CHANNEL 1
 
+#define MID_SWITCH_CHANNEL 2 //change that or not
+
+#define PWM_INTAKE_MOTOR 5
 #endif
