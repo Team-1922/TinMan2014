@@ -10,44 +10,38 @@ Shooter::Shooter() : catapultHigh(SOLENOID_CATAPULT_HIGH),
 
 void Shooter::Initialize()
 {
-	catapultLow.Set(true);
-		catapultHigh.Set(false);
-		/*while(!downLimit.Get())
-		{
-			Wait(0.001);
-		}
-		*/
-		Wait(3.3);
-		kickerLow.Set(false);
-		kickerHigh.Set(true);
-		Wait(0.1);
-		catapultLow.Set(false);
-		catapultHigh.Set(true);
+	kickerHigh.Set(true);
+	kickerLow.Set(false);
+	Wait(0.5);
+	catapultHigh.Set(true);
+	catapultLow.Set(false);
+		
 }
 
 void Shooter::LaunchSequence()
 {
-	if(!initiated || !downLimit.Get())
+	if(!initiated /*|| downLimit.Get()*/)
 		return;
-	kickerLow.Set(true);
 	kickerHigh.Set(false);
+	kickerLow.Set(true);
+	
 }
 
 void Shooter::ResetSequence()
 {
-	if(!initiated) //add limswitch later
+	if(!initiated /*|| !downLimit.Get()*/) 
 		return;
-	catapultLow.Set(true);
 	catapultHigh.Set(false);
-	/*while(!downLimit.Get())
-	{
+	catapultLow.Set(true);
+	/*while(downLimit.Get()){
 		Wait(0.001);
-	}
-	*/
-	Wait(3.3);
-	kickerLow.Set(false);
+	}*/
+	Wait(3.3); //remove if lim reenabled
 	kickerHigh.Set(true);
-	Wait(0.1);
-	catapultLow.Set(false);
+	kickerLow.Set(false);
+	
+	Wait(0.5);
+	
 	catapultHigh.Set(true);
+	catapultLow.Set(false);
 }

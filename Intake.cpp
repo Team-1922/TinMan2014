@@ -1,11 +1,9 @@
 #include "Intake.h"
 
 
-Intake::Intake():leftHigh(SOLENOID_INTAKE_LEFT_HIGH),
-				leftLow(SOLENOID_INTAKE_LEFT_LOW),
-				rightHigh(SOLENOID_INTAKE_RIGHT_HIGH),
-				rightLow(SOLENOID_INTAKE_RIGHT_LOW),
-				midSwitch(MID_SWITCH_CHANNEL)
+Intake::Intake():intakeHigh(SOLENOID_INTAKE_HIGH),
+				intakeLow(SOLENOID_INTAKE_LOW)
+				
 {
 	
 	
@@ -13,35 +11,21 @@ Intake::Intake():leftHigh(SOLENOID_INTAKE_LEFT_HIGH),
 }
 
 void Intake::Initialize(){
-	leftHigh.Set(true);
-	leftLow.Set(false);
-	rightHigh.Set(true);
-	rightLow.Set(false);
-	
+	intakeHigh.Set(false);
+	intakeLow.Set(true);
 	
 }
 
 void Intake::Extend(){
+	intakeHigh.Set(true);
+	intakeLow.Set(false);
 	
-	leftHigh.Set(false);
-	leftLow.Set(true);
-	rightHigh.Set(false);
-	rightLow.Set(true);
 	
 
 }
 
 void Intake::Retract(){
-	
-	leftHigh.Set(true);
-	leftLow.Set(false);
-	rightHigh.Set(true);
-	rightLow.Set(false);
-		
-}
-
-void Intake::MoveMid(){
-	
-	
+	intakeHigh.Set(false);
+	intakeLow.Set(true);
 	
 }

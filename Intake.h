@@ -6,19 +6,15 @@
 
 class Intake{
 private:
-	Solenoid leftHigh;
-	Solenoid leftLow;
-	Solenoid rightHigh;
-	Solenoid rightLow;
-	DigitalInput midSwitch;
-	
+	Solenoid intakeHigh;
+	Solenoid intakeLow;
+		
 	bool initialized;
 public:
 	Intake();
 	void Initialize();
 	void Extend();
 	void Retract();
-	void MoveMid();
 	
 };
 

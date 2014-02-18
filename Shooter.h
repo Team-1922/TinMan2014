@@ -13,7 +13,7 @@ private:
 	Solenoid kickerLow;
 	bool initiated;
 	DigitalInput downLimit;
-	static const int DOWN_LIMIT_CHANNEL = 1;
+	static const int DOWN_LIMIT_CHANNEL = 4;
 public:
 	Shooter();
 	void Initialize();
