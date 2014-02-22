@@ -14,7 +14,7 @@ void DriveTrain::DriveMecanum(float xVal, float yVal, float rotation)
 {
 	// For now, we have no manipulation to do of the variables.
 	// We'll just pass the values to the mainDrive Mecanum function.
-	mainDrive.MecanumDrive_Cartesian(-xVal, yVal, -rotation/*, -robotGyro.GetAngle()*/);
+	mainDrive.MecanumDrive_Cartesian(xVal, yVal, -rotation/*, -robotGyro.GetAngle()*/);
 	/* We use Cartesian instead of Polar because Cartesian lets us 
 	 * use the gyro without doing the manipulation ourselves.
 	 * The description in the WPILib reference also makes sense, whereas
@@ -38,7 +38,7 @@ void DriveTrain::DriveMecanum(Control* control)
 	// Pass those values to our normal drive function
 	// The y-axis is inverted and our gyro reads backwards,
 	// so we negate these values.
-	DriveMecanum(xVal, -yVal, twistVal);
+	DriveMecanum(-xVal, -yVal, twistVal);
 }
 
 void DriveTrain::ResetGyro()

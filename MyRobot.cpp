@@ -13,20 +13,32 @@ class RobotDemo : public SimpleRobot
 	Shooter robotShooter;
 	Jaguar intakeMotor;
 	Intake robotIntake;
+	Task launcherResetTask;
+	ReentrantSemaphore mutex;
+	Encoder roboEncoder;
+	bool launcherResetting;
 public:
-	RobotDemo() : robotCompressor(COMPRESSOR_SWITCH_CHANNEL, COMPRESSOR_RELAY_CHANNEL),
-			robotDrive(), robotControl(), robotShooter(),intakeMotor(PWM_INTAKE_MOTOR),
-			robotIntake()
+	void LauncherReset(void)
 	{
+		Synchronized sync(mutex);
+		robotShooter.ResetSequence();
+		launcherResetting = false;
 	}
 	
-void RobotInit(){
-	robotCompressor.Start();
-	robotShooter.Initialize();
-	robotIntake.Initialize();
+	RobotDemo() : robotCompressor(COMPRESSOR_SWITCH_CHANNEL, COMPRESSOR_RELAY_CHANNEL),
+			robotDrive(), robotControl(), robotShooter(),intakeMotor(PWM_INTAKE_MOTOR),
+			robotIntake(), launcherResetTask("LauncherTask", (FUNCPTR)LauncherReset),
+			roboEncoder(ENCODER_CHANNEL_A, ENCODER_CHANNEL_B)
+	{
+		launcherResetting = false;
+	}
 	
-	
-}
+	void RobotInit(){
+		robotCompressor.Start();
+		robotShooter.Initialize();
+		robotIntake.Initialize();
+		roboEncoder.SetDistancePerPulse(1);
+	}
 
 	/**
 	 * Drive left & right motors for 2 seconds then stop
@@ -34,6 +46,25 @@ void RobotInit(){
 	void Autonomous()
 	{
 		robotCompressor.Start();
+		robotShooter.Initialize();
+		robotIntake.Initialize();
+		/*do
+		{
+			robotDrive.DriveMecanum(0, 0.75f, 0);
+		} while(roboEncoder.GetDistance() < 10);*/
+		robotDrive.DriveMecanum(0, 0.75f, 0);
+		Wait(1.5);
+		robotDrive.DriveMecanum(0, 0, 0);
+		robotShooter.LaunchSequence();
+		Wait(1.5);
+		if(!launcherResetting)
+		{
+			if(launcherResetTask.Restart())
+			{
+				launcherResetting = true;
+			}
+		}
+		
 		/*Wait(0.5);
 		robotDrive.DriveMecanum(0.0f, 0.75f, 0.0f);
 		Wait(1);
@@ -62,30 +93,46 @@ void RobotInit(){
 				//Wait(1.5);
 				//robotShooter.ResetSequence();
 			}
-			else{
+			else
+			{
 				SmartDashboard::PutString("didTrigger","npe");
 			}
 			
-			if(robotControl.GetButtonSwitch(LEFT,3)){
+			if(robotControl.GetButtonSwitch(LEFT,3))
+			{
 				SmartDashboard::PutString("didUntrigger","hell yeah");
-				robotShooter.ResetSequence();
+				//robotShooter.ResetSequence();
+				if(!launcherResetting)
+				{
+					if(launcherResetTask.Restart())
+					{
+						launcherResetting = true;
+					}
+				}
 			}
-			else{
+			else
+			{
 				SmartDashboard::PutString("didUntrigger","npe");
 			}
+			
 			if(robotControl.GetButtonState(LEFT,5)){
 				intakeMotor.Set(-0.8);
 			}
-			else if(robotControl.GetButtonState(LEFT,4)){
-							intakeMotor.Set(0.8);
-						}
-						else{
-							intakeMotor.Set(-0);
-						}
-			if(robotControl.GetButtonSwitch(LEFT,7)){
+			else if(robotControl.GetButtonState(LEFT,4))
+			{
+				intakeMotor.Set(0.8);
+			}	
+			else
+			{
+				intakeMotor.Set(-0);
+			}
+			
+			if(robotControl.GetButtonSwitch(LEFT,7))
+			{
 				robotIntake.Retract();
 			}
-			else if(robotControl.GetButtonSwitch(LEFT,6)){
+			else if(robotControl.GetButtonSwitch(LEFT,6))
+			{
 				robotIntake.Extend();
 			}
 			Wait(0.005);				// wait for a motor update time

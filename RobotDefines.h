@@ -25,4 +25,7 @@
 #define MID_SWITCH_CHANNEL 2 //change that or not
 
 #define PWM_INTAKE_MOTOR 5
+
+#define ENCODER_CHANNEL_A 1
+#define ENCODER_CHANNEL_B 2
 #endif
