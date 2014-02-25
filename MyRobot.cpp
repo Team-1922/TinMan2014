@@ -6,7 +6,8 @@
 #include "Intake.h"
 
 class RobotDemo : public SimpleRobot
-{	
+{
+protected:
 	Compressor robotCompressor;
 	DriveTrain robotDrive; // Class that handles the drivetrain for us
 	Control robotControl; // Class that gives us functions for getting stuff from joysticks
@@ -14,23 +15,48 @@ class RobotDemo : public SimpleRobot
 	Jaguar intakeMotor;
 	Intake robotIntake;
 	Task launcherResetTask;
-	ReentrantSemaphore mutex;
+	// ReentrantSemaphore mutex;
 	Encoder roboEncoder;
-	bool launcherResetting;
+	bool launcherShooting;
 public:
-	void LauncherReset(void)
+	void LauncherShoot(void)
 	{
-		Synchronized sync(mutex);
+		if(launcherShooting) return;
+		launcherShooting = true;
+		SmartDashboard::PutString("Launcher shooting?", "Launcher shooting");
+		robotShooter.LaunchSequence();
+		Wait(1.3);
+		SmartDashboard::PutString("Launcher shooting?", "Launcher resetting");
 		robotShooter.ResetSequence();
-		launcherResetting = false;
+		launcherShooting = false;
+		SmartDashboard::PutString("Launcher resetting?", "Launcher done everything");
+	}
+	
+	bool IsLauncherShooting()
+	{
+		return launcherShooting;
+	}
+	
+	static void LauncherTask(RobotDemo* robo)
+	{
+		RobotDemo& robot = *robo;
+		SmartDashboard::PutString("Task go?", "Task go");
+		if(robot.IsLauncherShooting())
+		{
+			SmartDashboard::PutString("Task go?", "Task exit");
+			return;
+		}
+		robot.LauncherShoot();
+		SmartDashboard::PutString("Task go?", "Task done");
 	}
 	
 	RobotDemo() : robotCompressor(COMPRESSOR_SWITCH_CHANNEL, COMPRESSOR_RELAY_CHANNEL),
-			robotDrive(), robotControl(), robotShooter(),intakeMotor(PWM_INTAKE_MOTOR),
-			robotIntake(), launcherResetTask("LauncherTask", (FUNCPTR)LauncherReset),
+			robotDrive(), robotControl(), robotShooter(), intakeMotor(PWM_INTAKE_MOTOR),
+			robotIntake(), launcherResetTask("LauncherTask", (FUNCPTR)LauncherTask),
 			roboEncoder(ENCODER_CHANNEL_A, ENCODER_CHANNEL_B)
 	{
-		launcherResetting = false;
+		launcherShooting = false;
+		//robotShooter = new Shooter();
 	}
 	
 	void RobotInit(){
@@ -52,16 +78,21 @@ public:
 		{
 			robotDrive.DriveMecanum(0, 0.75f, 0);
 		} while(roboEncoder.GetDistance() < 10);*/
-		robotDrive.DriveMecanum(0, 0.75f, 0);
-		Wait(1.5);
+		double time = 0;
+		while(time < 1.5)
+		{
+			robotDrive.DriveMecanum(0, 0.75f, 0);
+			Wait(0.001);
+			time += 0.001;
+		}
 		robotDrive.DriveMecanum(0, 0, 0);
 		robotShooter.LaunchSequence();
 		Wait(1.5);
-		if(!launcherResetting)
+		if(!launcherShooting)
 		{
-			if(launcherResetTask.Restart())
+			if(launcherResetTask.Start((UINT32)this))
 			{
-				launcherResetting = true;
+				//launcherResetting = true;
 			}
 		}
 		
@@ -79,9 +110,9 @@ public:
 		robotCompressor.Start();
 		robotShooter.Initialize();
 		robotIntake.Initialize();
-		
 		while (IsOperatorControl())
 		{
+			SmartDashboard::PutBoolean("LauncherResettingVar", launcherShooting);
 			//testSolenoid.Set(robotControl.GetButtonState(RIGHT, 1));
 			// Just pass the control variable to the class
 			robotDrive.DriveMecanum(&robotControl);
@@ -89,7 +120,12 @@ public:
 			if(robotControl.GetButtonSwitch(LEFT, 1))
 			{
 				SmartDashboard::PutString("didTrigger","hell yeah");
-				robotShooter.LaunchSequence();
+				//robotShooter.LaunchSequence();
+				if(!launcherShooting)
+				{
+					launcherResetTask.Restart();
+					launcherResetTask.Start((UINT32)this);
+				}
 				//Wait(1.5);
 				//robotShooter.ResetSequence();
 			}
@@ -98,22 +134,25 @@ public:
 				SmartDashboard::PutString("didTrigger","npe");
 			}
 			
-			if(robotControl.GetButtonSwitch(LEFT,3))
+			/*if(robotControl.GetButtonSwitch(LEFT,3))
 			{
 				SmartDashboard::PutString("didUntrigger","hell yeah");
 				//robotShooter.ResetSequence();
 				if(!launcherResetting)
 				{
-					if(launcherResetTask.Restart())
+					launcherResetTask.Restart();
+					launcherResetTask.Start((UINT32)this);*/
+					/*if(launcherResetTask.Restart())
 					{
-						launcherResetting = true;
-					}
-				}
-			}
-			else
+						launcherResetTask.Start((UINT32)this);
+						//launcherResetting = true;
+					}*/
+				/*}
+			}*/
+			/*else
 			{
 				SmartDashboard::PutString("didUntrigger","npe");
-			}
+			}*/
 			
 			if(robotControl.GetButtonState(LEFT,5)){
 				intakeMotor.Set(-0.8);

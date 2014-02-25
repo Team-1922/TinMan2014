@@ -11,8 +11,8 @@ Intake::Intake():intakeHigh(SOLENOID_INTAKE_HIGH),
 }
 
 void Intake::Initialize(){
-	intakeHigh.Set(false);
-	intakeLow.Set(true);
+	intakeHigh.Set(true);
+	intakeLow.Set(false);
 	
 }
 
