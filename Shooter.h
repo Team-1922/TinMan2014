@@ -12,7 +12,7 @@ private:
 	Solenoid kickerHigh;
 	Solenoid kickerLow;
 	bool initiated;
-	DigitalInput downLimit;
+	//DigitalInput downLimit;
 	static const int DOWN_LIMIT_CHANNEL = 4;
 public:
 	Shooter();

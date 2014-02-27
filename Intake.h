@@ -15,7 +15,6 @@ public:
 	void Initialize();
 	void Extend();
 	void Retract();
-	
 };
 
 #endif

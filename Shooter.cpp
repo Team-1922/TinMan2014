@@ -3,9 +3,10 @@
 Shooter::Shooter() : catapultHigh(SOLENOID_CATAPULT_HIGH),
 					 catapultLow(SOLENOID_CATAPULT_LOW),
 					 kickerHigh(SOLENOID_KICKER_HIGH),
-					 kickerLow(SOLENOID_KICKER_LOW),
-					 downLimit(DOWN_LIMIT_CHANNEL)
+					 kickerLow(SOLENOID_KICKER_LOW)/*,
+					 downLimit(DOWN_LIMIT_CHANNEL)*/
 {
+	initiated = false;
 }
 
 void Shooter::Initialize()
@@ -15,7 +16,7 @@ void Shooter::Initialize()
 	Wait(0.5);
 	catapultHigh.Set(true);
 	catapultLow.Set(false);
-		
+	initiated = true;
 }
 
 void Shooter::LaunchSequence()

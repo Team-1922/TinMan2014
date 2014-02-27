@@ -74,19 +74,28 @@ public:
 		robotCompressor.Start();
 		robotShooter.Initialize();
 		robotIntake.Initialize();
+		robotIntake.Retract();
+		robotIntake.Extend();
+		double intakeTime = 0;
+		while(intakeTime < 1.0)
+		{
+			intakeMotor.Set(-0.8);
+			Wait(0.001);
+			intakeTime += 0.001;
+		}
 		/*do
 		{
 			robotDrive.DriveMecanum(0, 0.75f, 0);
 		} while(roboEncoder.GetDistance() < 10);*/
-		double time = 0;
-		while(time < 1.5)
+		double driveTime = 0;
+		while(driveTime < 1.5)
 		{
 			robotDrive.DriveMecanum(0, 0.75f, 0);
 			Wait(0.001);
-			time += 0.001;
+			driveTime += 0.001;
 		}
 		robotDrive.DriveMecanum(0, 0, 0);
-		robotShooter.LaunchSequence();
+		//robotShooter.LaunchSequence();
 		Wait(1.5);
 		if(!launcherShooting)
 		{
