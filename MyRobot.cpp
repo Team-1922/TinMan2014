@@ -5,10 +5,10 @@
 #include "RobotDefines.h"
 #include "Intake.h"
 
-class RobotDemo : public SimpleRobot
+class RobotDemo : public SampleRobot
 {
 protected:
-	Compressor robotCompressor;
+	//Compressor robotCompressor;
 	DriveTrain robotDrive; // Class that handles the drivetrain for us
 	Control robotControl; // Class that gives us functions for getting stuff from joysticks
 	Shooter robotShooter;
@@ -50,7 +50,7 @@ public:
 		SmartDashboard::PutString("Task go?", "Task done");
 	}
 	
-	RobotDemo() : robotCompressor(COMPRESSOR_SWITCH_CHANNEL, COMPRESSOR_RELAY_CHANNEL),
+	RobotDemo() : //robotCompressor(COMPRESSOR_SWITCH_CHANNEL, COMPRESSOR_RELAY_CHANNEL),
 			robotDrive(), robotControl(), robotShooter(), intakeMotor(PWM_INTAKE_MOTOR),
 			robotIntake(), launcherResetTask("LauncherTask", (FUNCPTR)LauncherTask),
 			roboEncoder(ENCODER_CHANNEL_A, ENCODER_CHANNEL_B)
@@ -60,7 +60,7 @@ public:
 	}
 	
 	void RobotInit(){
-		robotCompressor.Start();
+		//robotCompressor.Start();
 		robotShooter.Initialize();
 		robotIntake.Initialize();
 		roboEncoder.SetDistancePerPulse(1);
@@ -71,7 +71,7 @@ public:
 	 */
 	void Autonomous()
 	{
-		robotCompressor.Start();
+		//robotCompressor.Start();
 		robotShooter.Initialize();
 		robotIntake.Initialize();
 		robotIntake.Retract();
@@ -99,7 +99,7 @@ public:
 		Wait(1.5);
 		if(!launcherShooting)
 		{
-			if(launcherResetTask.Start((UINT32)this))
+			if(launcherResetTask.Start((uint32_t)this))
 			{
 				//launcherResetting = true;
 			}
@@ -116,7 +116,7 @@ public:
 	 */
 	void OperatorControl()
 	{
-		robotCompressor.Start();
+		//robotCompressor.Start();
 		robotShooter.Initialize();
 		robotIntake.Initialize();
 		while (IsOperatorControl())
@@ -133,7 +133,7 @@ public:
 				if(!launcherShooting)
 				{
 					launcherResetTask.Restart();
-					launcherResetTask.Start((UINT32)this);
+					launcherResetTask.Start((uint32_t)this);
 				}
 				//Wait(1.5);
 				//robotShooter.ResetSequence();
