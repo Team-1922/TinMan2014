@@ -90,11 +90,19 @@ public:
 		double driveTime = 0;
 		while(driveTime < 1.5)
 		{
+#ifdef TANK_DRIVE
+			//who knows
+#else
 			robotDrive.DriveMecanum(0, 0.75f, 0);
+#endif
 			Wait(0.001);
 			driveTime += 0.001;
 		}
+#ifdef TANK_DRIVE
+		//who knows
+#else
 		robotDrive.DriveMecanum(0, 0, 0);
+#endif
 		//robotShooter.LaunchSequence();
 		Wait(1.5);
 		if(!launcherShooting)
@@ -124,7 +132,11 @@ public:
 			SmartDashboard::PutBoolean("LauncherResettingVar", launcherShooting);
 			//testSolenoid.Set(robotControl.GetButtonState(RIGHT, 1));
 			// Just pass the control variable to the class
-			robotDrive.DriveMecanum(&robotControl);
+#ifdef TANK_DRIVE
+			robotDrive.DriveTank(&robotControl);
+#else
+			robotDrive.DriveMechanum(&robotControl);
+#endif
 			
 			if(robotControl.GetButtonSwitch(LEFT, 1))
 			{

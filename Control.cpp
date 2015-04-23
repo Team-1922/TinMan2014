@@ -1,6 +1,6 @@
 #include "Control.h"
 
-Control::Control() : leftStick(1), rightStick(2)
+Control::Control() : leftStick(1), driverStick2(2), rightStick(3)
 {
 	// We don't have much to do here.
 }
@@ -12,10 +12,12 @@ float Control::GetX(StickSide side)
 	{
 	case LEFT:
 		return leftStick.GetX();
-		break;
 	case RIGHT:
 		return rightStick.GetX();
-		break;
+	case DRIVER2:
+		return driverStick2.GetX();
+	default:
+		return 0;
 	}
 	return 0;
 }
@@ -27,10 +29,12 @@ float Control::GetY(StickSide side)
 	{
 	case LEFT:
 		return leftStick.GetY();
-		break;
 	case RIGHT:
 		return rightStick.GetY();
-		break;
+	case DRIVER2:
+		return driverStick2.GetY();
+	default:
+		return 0;
 	}
 	return 0;
 }
@@ -42,10 +46,12 @@ float Control::GetThrottle(StickSide side)
 	{
 	case LEFT:
 		return leftStick.GetThrottle();
-		break;
 	case RIGHT:
 		return rightStick.GetThrottle();
-		break;
+	case DRIVER2:
+		return driverStick2.GetThrottle();
+	default:
+		return 0;
 	}
 	return 0;
 }
@@ -57,10 +63,12 @@ float Control::GetTwist(StickSide side)
 	{
 	case LEFT:
 		return leftStick.GetTwist();
-		break;
 	case RIGHT:
 		return rightStick.GetTwist();
-		break;
+	case DRIVER2:
+		return driverStick2.GetTwist();
+	default:
+		return 0;
 	}
 	return 0;
 }
@@ -75,6 +83,9 @@ bool Control::GetButtonState(StickSide side, int btnNum)
 		break;
 	case RIGHT:
 		stick = &rightStick;
+		break;
+	case DRIVER2:
+		stick = &driverStick2;
 		break;
 	default:
 		stick = &leftStick;
@@ -102,6 +113,8 @@ bool Control::GetButtonSwitch(StickSide side, int btnNum)
 		stick = &rightStick;
 		buttonMap = &rightButtonState;
 		break;
+	case DRIVER2:
+		return false;//just because no point in having this feature on this joystick
 	default:
 		//button = new JoystickButton(&leftStick, btnNum);
 		stick = &leftStick;

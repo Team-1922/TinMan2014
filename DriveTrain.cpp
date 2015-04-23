@@ -41,6 +41,21 @@ void DriveTrain::DriveMecanum(Control* control)
 	DriveMecanum(-xVal, -yVal, twistVal);
 }
 
+void DriveTrain::DriveTank(Control* control)
+{
+	// Get the values from the control class
+	float lVal = control->GetY(DRIVER2);
+	float rVal = control->GetY(RIGHT);
+
+	DriveTank(lVal, rVal);
+}
+
+void DriveTrain::DriveTank(float leftMotor, float rightMotor)
+{
+	//simple pass-through
+	mainDrive.TankDrive(leftMotor, leftMotor, false);
+}
+
 void DriveTrain::ResetGyro()
 {
 	robotGyro.Reset();

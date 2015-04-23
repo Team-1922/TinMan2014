@@ -7,6 +7,7 @@
 enum StickSide
 {
 	LEFT,
+	DRIVER2,
 	RIGHT
 };
 
@@ -14,7 +15,8 @@ class Control
 {
 private:
 	Joystick leftStick;
-	Joystick rightStick;
+	Joystick driverStick2;//surgically added to support the tank drive control system
+	Joystick rightStick;//the right driver joystick
 	
 	/* These are the last pressed states for the left and right buttons.
 	 * Our RobotButton class seems to be functioning poorly, so we'll

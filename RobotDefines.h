@@ -28,4 +28,8 @@
 
 #define ENCODER_CHANNEL_A 1
 #define ENCODER_CHANNEL_B 2
+
+//comment this out to use mechanum drive system
+#define TANK_DRIVE
+
 #endif
