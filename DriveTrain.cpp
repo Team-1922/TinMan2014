@@ -8,6 +8,8 @@ DriveTrain::DriveTrain() : mainDrive(PWM_FRONT_LEFT_MOTOR,
 						   robotGyro(GYRO_CHANNEL)
 {
 	// #yoloswagforlifeveryday
+	mainDrive.SetSafetyEnabled(true);
+	mainDrive.SetExpiration(0.1);
 }
 
 void DriveTrain::DriveMecanum(float xVal, float yVal, float rotation)
@@ -47,13 +49,13 @@ void DriveTrain::DriveTank(Control* control)
 	float lVal = control->GetY(DRIVER2);
 	float rVal = control->GetY(RIGHT);
 
-	DriveTank(lVal, rVal);
+	DriveTank(-lVal, -rVal);
 }
 
 void DriveTrain::DriveTank(float leftMotor, float rightMotor)
 {
 	//simple pass-through
-	mainDrive.TankDrive(leftMotor, leftMotor, false);
+	mainDrive.TankDrive(leftMotor, rightMotor, false);
 }
 
 void DriveTrain::ResetGyro()

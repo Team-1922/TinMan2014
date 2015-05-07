@@ -1,6 +1,6 @@
 #include "Control.h"
 
-Control::Control() : leftStick(1), driverStick2(2), rightStick(3)
+Control::Control() : leftStick(2), driverStick2(0), rightStick(1)
 {
 	// We don't have much to do here.
 }
