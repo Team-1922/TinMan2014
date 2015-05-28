@@ -5,6 +5,22 @@ Control::Control() : leftStick(2), driverStick2(0), rightStick(1)
 	// We don't have much to do here.
 }
 
+
+float Control::GetAxis(StickSide side, unsigned int axis)
+{
+	switch(side)
+	{
+	case LEFT:
+		return leftStick.GetRawAxis(axis);
+	case RIGHT:
+		return rightStick.GetRawAxis(axis);
+	case DRIVER2:
+		return driverStick2.GetRawAxis(axis);
+	default:
+		return 0;
+	}
+	return 0;
+}
 float Control::GetX(StickSide side)
 {
 	// Test which joystick we're using and return value from that side.

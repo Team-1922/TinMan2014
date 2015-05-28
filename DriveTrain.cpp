@@ -46,8 +46,8 @@ void DriveTrain::DriveMecanum(Control* control)
 void DriveTrain::DriveTank(Control* control)
 {
 	// Get the values from the control class
-	float lVal = control->GetY(DRIVER2);
-	float rVal = control->GetY(RIGHT);
+	float lVal = control->GetAxis(DRIVER2, 1);
+	float rVal = control->GetAxis(DRIVER2, 3);
 
 	DriveTank(-lVal, -rVal);
 }

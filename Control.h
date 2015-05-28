@@ -39,6 +39,7 @@ private:
 	//typedef std::pair<int, JoystickButton> MapPair;
 public:
 	Control();
+	float GetAxis(StickSide side, unsigned int axis);
 	float GetX(StickSide side);
 	float GetY(StickSide side);
 	float GetThrottle(StickSide side);
